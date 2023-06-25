@@ -4,6 +4,8 @@ from myscrollableframe import *
 import re
 from smh import *
 from Helper_entry import *
+import unicodedata
+import re
 
 
 class SearchCombobox(ttk.Entry):
@@ -41,8 +43,6 @@ class SearchCombobox(ttk.Entry):
         self.current_color = self.helper_text_color
 
     def open_dropdown_window(self, event):
-        x = event.widget.winfo_rootx()
-        y = event.widget.winfo_rooty()
 
         if self.current_color == self.helper_text_color:
             self.textvariable.set("")
@@ -51,13 +51,27 @@ class SearchCombobox(ttk.Entry):
 
         self.select_search_values(self.textvariable.get(), None)
 
-        self.dropdown_window.geometry(f"{self.winfo_width()}x{120}+{x}+{y + 35}")
+        #self.change_selection_window_size()
+
         self.dropdown_window.deiconify()
 
     def close_dropdown_window(self):
         if not self.get():
             self.put_helper_text()
         self.dropdown_window.withdraw()
+
+    def change_selection_window_size(self):
+        self.scroll_frame.update_idletasks()
+        x = self.winfo_rootx()
+        y = self.winfo_rooty()
+
+        if not self.scroll_frame.interior.winfo_children():
+            self.dropdown_window.geometry(f"{self.winfo_width()}x{0}+{x}+{0 + 35}")
+        elif self.scroll_frame.interior.winfo_reqheight() <= 120:
+            self.dropdown_window.geometry(
+                f"{self.winfo_width()}x{self.scroll_frame.interior.winfo_reqheight() + 12}+{x}+{y + 35}")
+        else:
+            self.dropdown_window.geometry(f"{self.winfo_width()}x{120}+{x}+{y + 35}")
 
     def fill_values_frame(self):
         for widget in self.scroll_frame.interior.winfo_children():
@@ -68,8 +82,7 @@ class SearchCombobox(ttk.Entry):
             label.bind("<Button-1>", self.select_value)
             label.grid(column=0, row=i, sticky='ew')
 
-        self.scroll_frame.event_frame_configure()
-        self.scroll_frame.event_canvas_configure()
+        self.change_selection_window_size()
 
     def select_value(self, event):
         self.textvariable.set(event.widget.cget("text"))
@@ -79,8 +92,10 @@ class SearchCombobox(ttk.Entry):
 
     def select_search_values(self, search_entry, S):
         self.search_values = []
+        normalized_search_entry = unicodedata.normalize('NFC', str(search_entry).casefold())
         for value in self.values:
-            if str(search_entry).lower() in str(value).lower():
+            normalized_value = unicodedata.normalize('NFC',str(value).casefold())
+            if normalized_search_entry in normalized_value:
                 self.search_values.append(value)
 
         self.fill_values_frame()
@@ -89,4 +104,3 @@ class SearchCombobox(ttk.Entry):
     def values_update(self, new_values):
         self.values = new_values
         self.fill_values_frame()
-

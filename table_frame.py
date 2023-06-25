@@ -25,6 +25,7 @@ class TableFrame(MyTableFrame):
         self.selected_table_data, _ = db_select(mysql_request)
         self.list_column_widgets = [0] * (len(date_column_index) + len(checkbox_columns_index))
         self.list_selection_window = [0] * (len(date_column_index) + len(checkbox_columns_index))
+        self.list_label_arrow = [0] * (len(date_column_index) + len(checkbox_columns_index))
         self.create_table_frame()
         self.create_selection_windows()
 
@@ -50,6 +51,7 @@ class TableFrame(MyTableFrame):
 
             label_arrow = tkinter.Label(column_frame, text="○", background='#CCCCCC', font=('Arial', 12))
             label_arrow.grid(column=1, row=0, sticky='w')
+            self.list_label_arrow[i] = label_arrow
 
         # Create and fill grid columns with files of TABLE Form
         for i in self.file_column_index:
@@ -71,6 +73,7 @@ class TableFrame(MyTableFrame):
 
             label_arrow = tkinter.Label(column_frame, text="○", background='#CCCCCC', font=('Arial', 12))
             label_arrow.grid(column=1, row=0, sticky='w')
+            self.list_label_arrow[i] = label_arrow
         self.fill_table_rows()
 
     def fill_table_rows(self):
@@ -99,13 +102,31 @@ class TableFrame(MyTableFrame):
     def create_selection_windows(self):
         for i in self.checkbox_columns_index:
             variables = get_unique_val_column(self.table_data, self.list_column_widgets[i].master.grid_info()['column'])
-            selection_window = SelectionOptionWindow(self.root, variables, callback=self.update_table_frame)
+            selection_window = SelectionOptionWindow(self.root, variables,
+                                                     callback=lambda index=i: self.selection_option_window_callback(
+                                                         index))
             self.list_selection_window[i] = selection_window
 
         # Create date selection window
         for i in self.date_column_index:
-            selection_window = SelectionDateWindow(self.root, callback=self.update_table_frame)
+            selection_window = SelectionDateWindow(self.root, callback=lambda index=i: self.selection_date_window_callback(index))
             self.list_selection_window[i] = selection_window
+
+    def selection_option_window_callback(self, index):
+        if all(state.get() for state in self.list_selection_window[index].variables_state):
+            self.list_label_arrow[index].configure(text="○")
+        else:
+            self.list_label_arrow[index].configure(text="●")
+        self.update_table_frame()
+
+    def selection_date_window_callback(self, index):
+        helper_text = self.list_selection_window[index].unselected_date_value
+        print([entry.textvariable.get() for entry in self.list_selection_window[index].list_date_entry])
+        if all(entry.textvariable.get() == helper_text for entry in self.list_selection_window[index].list_date_entry):
+            self.list_label_arrow[index].configure(text="○")
+        else:
+            self.list_label_arrow[index].configure(text="●")
+        self.update_table_frame()
 
     def update_table_frame(self):
         total_rows = self.grid_size()[1]

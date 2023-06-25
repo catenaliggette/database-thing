@@ -38,7 +38,7 @@ class AddApplicationButton(MyAddButton):
         application_file_name = tkinter.StringVar()
 
         company_values, company_label_text = db_select('''select distinct Company_name as "Company:" from company''')
-        company_label = ttk.Label(add_window, text=company_label_text[0])
+        company_label = ttk.Label(add_window, text="Company:")
         company_label.grid(column=0, row=0, padx=(10, 5), pady=(10, 0), sticky='e')
         self.company_searchbox = SearchCombobox(add_window, values=["".join(value) for value in company_values], helper_text='Name')
         self.company_searchbox.grid(column=1, row=0, padx=(5, 0), pady=(10, 0), sticky='w')
@@ -157,12 +157,16 @@ where city_name = %s''', self.sender_country_searchbox))
         add_button.grid(column=2, columnspan=2, row=9, sticky='e', padx=5)
 
     def set_drop_file_path(self, event, textvariable, file_path_set_func):
-        file_path = event.data
-        textvariable.set(os.path.basename(file_path))
-        file_path_set_func(file_path)
+        files = self.winfo_toplevel().tk.splitlist(event.data)
+        if len(files) != 1:
+            messagebox.showerror("Multiple files selected", "Please, select or drag and drop one file")
+
+        textvariable.set(os.path.basename(files[0]))
+        file_path_set_func(files[0])
 
     def set_select_file_explorer(self, event, textvariable, file_path_set_func):
         file_path = filedialog.askopenfilename()
+        print(file_path)
         textvariable.set(os.path.basename(file_path))
         file_path_set_func(file_path)
 

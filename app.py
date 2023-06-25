@@ -9,6 +9,7 @@ class App():
     style.theme_use("forest-light")
 
     root.state('zoomed')
+    root.option_add("*encoding", "utf-8")
 
     def __init__(self):
         self.root.title('AAAAAAAAAAAAAAAAAAAAAAAAAAA')
