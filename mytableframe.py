@@ -2,7 +2,7 @@ import tkinter
 from tkinter import ttk
 
 
-class MyTableFrame(ttk.LabelFrame):
+class MyTableFrame(ttk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super(MyTableFrame, self).__init__(parent, *args, **kwargs)
 

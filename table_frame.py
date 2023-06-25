@@ -12,7 +12,8 @@ from myscrollableframe import *
 
 
 class TableFrame(MyTableFrame):
-    def __init__(self, parent, root, weights, checkbox_columns_index, date_column_index, file_column_index, mysql_request, *args, **kwargs):
+    def __init__(self, parent, root, weights, checkbox_columns_index, date_column_index, file_column_index,
+                 mysql_request, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.root = root
         self.weights = weights
@@ -82,16 +83,18 @@ class TableFrame(MyTableFrame):
         # Date column
         for i in self.date_column_index:
             for j in range(len(self.selected_table_data)):
-                label = tkinter.Label(self, text=self.selected_table_data[j][i].strftime("%d.%m.%Y"), height=1, anchor='w')
+                label = tkinter.Label(self, text=self.selected_table_data[j][i].strftime("%d.%m.%Y"), height=1,
+                                      anchor='w')
                 label.grid(column=i, row=j + 1, sticky='ew')
                 label.bind("<Button-1>", lambda event, frame=self: frame.on_click_row_selection(event))
 
         # Create and fill cells with files, add buttons for opening files
         for i in self.file_column_index:
             for j in range(len(self.selected_table_data)):
-                button = tkinter.Button(self, text='📄', command=lambda file_path=self.selected_table_data[j][i]: open_file(file_path),
+                button = tkinter.Button(self, text='📄',
+                                        command=lambda file_path=self.selected_table_data[j][i]: open_file(file_path),
                                         highlightthickness=0, bd=0, height=1)
-                button.grid(column=i, row=j+1, sticky='ew')
+                button.grid(column=i, row=j + 1, sticky='ew')
 
     def create_selection_windows(self):
         for i in self.checkbox_columns_index:
@@ -113,7 +116,8 @@ class TableFrame(MyTableFrame):
 
         self.selected_table_data = []
         for row in self.table_data:
-            if all(self.list_selection_window[column_index].check_selected_variable(row[column_index]) for column_index in range(len(self.list_selection_window))):
+            if all(self.list_selection_window[column_index].check_selected_variable(row[column_index]) for column_index
+                   in range(len(self.list_selection_window))):
                 self.selected_table_data.append(row)
 
         self.fill_table_rows()
@@ -125,7 +129,6 @@ class TableFrame(MyTableFrame):
             self.list_selection_window[i].update_values(variables)
 
         self.update_table_frame()
-
 
     def event_click_column_header(self, event, column_header_frame):
         column_header_frame.on_click_row_selection(event)

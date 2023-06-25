@@ -299,21 +299,6 @@ where city_name = %s''', self.sender_country_searchbox))
         added_company = list(set(["".join(value) for value in new_company_values]) - set(old_company_values))[0]
         added_bin = list(set([value[0] for value in new_bin_valies]) - set(old_bin_values))[0]
 
-        print(old_company_values)
-        print(old_bin_values)
-        print()
-
-        print(new_company_values)
-        print(new_bin_valies)
-        print()
-
-        print(["".join(value) for value in new_company_values])
-        print([value[0] for value in new_bin_valies])
-        print()
-
-        print(added_company)
-        print(added_bin)
-
         self.company_searchbox.textvariable.set(added_company)
         self.company_searchbox.configure(foreground=self.company_searchbox.default_color)
         self.company_searchbox.current_color = self.company_searchbox.default_color

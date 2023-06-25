@@ -24,9 +24,9 @@ class SearchCombobox(ttk.Entry):
         self.dropdown_window = tkinter.Toplevel(self.winfo_toplevel())
         self.dropdown_window.overrideredirect(True)
 
-        self.scroll_frame = ScrollableFrame(self.dropdown_window, labelwidget=ttk.Frame(self.dropdown_window))
+        self.scroll_frame = ScrollableFrame(self.dropdown_window)
         self.scroll_frame.pack(fill='both', expand=True, side='left')
-        self.scroll_frame.canvas_frame.columnconfigure(0, weight=1)
+        self.scroll_frame.interior.columnconfigure(0, weight=1)
 
         self.dropdown_window.withdraw()
 
@@ -60,14 +60,15 @@ class SearchCombobox(ttk.Entry):
         self.dropdown_window.withdraw()
 
     def fill_values_frame(self):
-        for widget in self.scroll_frame.canvas_frame.winfo_children():
+        for widget in self.scroll_frame.interior.winfo_children():
             widget.destroy()
 
         for i, value in enumerate(self.search_values):
-            label = ttk.Label(self.scroll_frame.canvas_frame, text=value)
+            label = ttk.Label(self.scroll_frame.interior, text=value)
             label.bind("<Button-1>", self.select_value)
             label.grid(column=0, row=i, sticky='ew')
 
+        self.scroll_frame.event_frame_configure()
         self.scroll_frame.event_canvas_configure()
 
     def select_value(self, event):

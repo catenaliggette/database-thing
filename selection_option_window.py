@@ -17,7 +17,7 @@ class SelectionOptionWindow(tkinter.Toplevel):
 
     def create_selection_window(self):
         self.overrideredirect(True)
-        self.bind("<FocusOut>", lambda focus_event: event_window_loss_focus(focus_event, self, self.hide_window))
+        self.bind("<FocusOut>", lambda event: event_window_loss_focus(event, self.hide_window))
 
         selection_frame = ttk.LabelFrame(self, labelwidget=ttk.Frame(self))
         selection_frame.pack(fill='both', expand=True)
@@ -27,19 +27,20 @@ class SelectionOptionWindow(tkinter.Toplevel):
         select_all_button = ttk.Button(selection_frame, text='Select All', command=self.select_all_button)
         select_all_button.pack(anchor='w')
 
-        self.scroll_frame = ScrollableFrame(self, labelwidget=ttk.Frame(self))
+        self.scroll_frame = ScrollableFrame(self)
         self.scroll_frame.pack(fill='both', expand=True)
 
         self.fill_selection_window()
 
     def fill_selection_window(self):
-        for widget in self.scroll_frame.canvas_frame.winfo_children():
+        for widget in self.scroll_frame.interior.winfo_children():
             widget.destroy()
 
         for i, var_str in enumerate(self.variables_text):
-            selection_checkbox = ttk.Checkbutton(self.scroll_frame.canvas_frame, text=var_str,
+            selection_checkbox = ttk.Checkbutton(self.scroll_frame.interior, text=var_str,
                                                  variable=self.variables_state[i], command=self.checkbox_state_change)
             selection_checkbox.grid(column=0, row=i, sticky='w')
+            self.scroll_frame.event_canvas_configure()
 
     def hide_window(self):
         self.withdraw()
