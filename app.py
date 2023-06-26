@@ -29,7 +29,7 @@ class App():
         tabs.add(applications_frame, text='Applications')
         tabs.add(companies_frame, text='Companies')
 
-        applications_frame.fill_frame(self.root)
+        #applications_frame.fill_frame(self.root)
 
         tabs.bind("<<NotebookTabChanged>>", self.on_tab_changed)
 

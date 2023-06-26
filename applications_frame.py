@@ -1,31 +1,91 @@
+import tkinter
+from tkinter import ttk
+
 from table_frame import *
 from add_application_button import *
 from myscrollableframe import *
 from myscrollableframe import *
+from Helper_entry import *
 
 
 class ApplicationFrame(ttk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
 
-    def fill_frame(self, root):
-        self.root = root
+        self.query = """
+SELECT Company_name, Company_BIN, application_date, car_number, freight_cost, senders_address, recipients_address, SMR_path, application_path
+FROM (
+    SELECT
+        c.Company_name,
+        Company_BIN,
+        application_date,
+        car_number,
+        freight_cost,
+        CONCAT(senders_country.country_name, ', ', senders_city.city_name) AS senders_address,
+        CONCAT(recipients_country.country_name, ', ', recipients_city.city_name) AS recipients_address,
+        SMR_path,
+        application_path,
+        CONCAT(c.Company_name, Company_BIN, application_date, car_number, freight_cost, senders_country.country_name, senders_city.city_name, recipients_country.country_name, recipients_city.city_name) as concatenated_columns
+    FROM
+        transport_applications AS ta
+        INNER JOIN company c ON ta.Company_id = c.Company_id
+        INNER JOIN cars c2 ON ta.Car_id = c2.car_id
+        JOIN cities senders_city ON senders_city.city_id = ta.senders_city_id
+        JOIN countries senders_country ON senders_city.country_id = senders_country.country_id
+        JOIN cities recipients_city ON recipients_city.city_id = ta.recipients_city_id
+        JOIN countries recipients_country ON recipients_city.country_id = recipients_country.country_id
+) AS table_alias
+    """
+        self.search_query = self.query
+
+        self.bind('<Button-1>', lambda event: self.focus_set())
+
         self.rowconfigure(1, weight=1)
         self.scrollable_frame = ScrollableFrame(self)
         self.scrollable_frame.grid(row=1, column=0, sticky='news', pady=(10, 10))
-        self.table_frame = TableFrame(self.scrollable_frame.interior, root, weights=[3, 3, 2, 3, 2, 4, 4, 1, 1],
-                                 checkbox_columns_index=[0, 1, 3, 4, 5, 6], date_column_index=[2],
-                                 file_column_index=[7, 8], mysql_request='''select c.Company_name, Company_BIN, application_date, car_number, freight_cost, CONCAT(senders_country.country_name, ', ', senders_city.city_name) as senders_adress, CONCAT(recipients_country.country_name, ', ',recipients_city.city_name) as recipients_adress, SMR_path, application_path
-from transport_applications as ta
-inner join company c on ta.Company_id = c.Company_id
-inner join cars c2 on ta.Car_id = c2.car_id
-join cities senders_city on senders_city.city_id = ta.senders_city_id
-join countries senders_country on senders_city.country_id = senders_country.country_id
-join cities recipients_city on recipients_city.city_id = ta.recipients_city_id
-join countries recipients_country on recipients_city.country_id = recipients_country.country_id''')
+        self.table_frame = TableFrame(self.scrollable_frame.interior, parent.winfo_toplevel(), weights=[3, 3, 2, 3, 2, 4, 4, 1, 1],
+                                      checkbox_columns_index=[0, 1, 3, 4, 5, 6], date_column_index=[2],
+                                      file_column_index=[7, 8], mysql_request='''select c.Company_name, Company_BIN, application_date, car_number, freight_cost, CONCAT(senders_country.country_name, ', ', senders_city.city_name) as senders_adress, CONCAT(recipients_country.country_name, ', ',recipients_city.city_name) as recipients_adress, SMR_path, application_path
+        from transport_applications as ta
+        inner join company c on ta.Company_id = c.Company_id
+        inner join cars c2 on ta.Car_id = c2.car_id
+        join cities senders_city on senders_city.city_id = ta.senders_city_id
+        join countries senders_country on senders_city.country_id = senders_country.country_id
+        join cities recipients_city on recipients_city.city_id = ta.recipients_city_id
+        join countries recipients_country on recipients_city.country_id = recipients_country.country_id''')
         self.table_frame.pack(fill='both', expand=True)
 
-        # Create insert ADD button on main frame
         self.rowconfigure(0, weight=0)
-        add_button = AddApplicationButton(parent=self, text='Add', style='Accent.TButton', callback=self.table_frame.update_data)
+        self.grid_columnconfigure(0, weight=1)
+        add_button = AddApplicationButton(parent=self, text='Add', style='Accent.TButton',
+                                          callback=self.table_frame.update_data)
         add_button.grid(row=0, column=0, sticky='w')
 
-        self.grid_columnconfigure(0, weight=1)
+        helper_text = 'Enter application details...'
+        self.search_entry = HelperEntry(self, helper_text=helper_text, width=100)
+        self.search_entry.grid(column=0, row=0, sticky='e')
+
+        #self.search_entry.textvariable.trace('w', lambda *args: self.search_query_update())
+        self.search_entry.bind('<KeyRelease>', self.search_query_update)
+
+    def new_data_select(self):
+        new_data, _ = db_select(self.search_query)
+        self.table_frame.update_data(new_data)
+        print(new_data)
+
+    def search_query_update(self, *args):
+        self.search_query = self.query
+        search_text = self.search_entry.get()
+        if search_text != self.search_entry.helper_text:
+            search_keywords = search_text.split()
+            if search_keywords:
+                self.search_query += f'\nWHERE\n'
+                conditions = []
+                for word in search_keywords:
+                    conditions.append(f"concatenated_columns LIKE '%{word}%'")
+                self.search_query += " AND ".join(conditions)
+        print(self.search_query)
+        self.new_data_select()
+
+
+

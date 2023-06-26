@@ -166,7 +166,6 @@ where city_name = %s''', self.sender_country_searchbox))
 
     def set_select_file_explorer(self, event, textvariable, file_path_set_func):
         file_path = filedialog.askopenfilename()
-        print(file_path)
         textvariable.set(os.path.basename(file_path))
         file_path_set_func(file_path)
 

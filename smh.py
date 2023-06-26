@@ -31,6 +31,7 @@ def db_commit(mysql_request, values):
     cursor.execute(mysql_request, values)
     applications_db.commit()
 
+
 def open_file(file_path):
     if os.path.isfile(file_path):
         try:
@@ -46,4 +47,3 @@ def event_window_loss_focus(event, loss_focus_True_callback):
     print(f'Widget that lost focus: {event.widget}')
     if event.widget.winfo_toplevel().focus_get() is None:
         loss_focus_True_callback()
-
