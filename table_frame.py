@@ -12,28 +12,25 @@ from myscrollableframe import *
 
 
 class TableFrame(MyTableFrame):
-    def __init__(self, parent, root, weights, checkbox_columns_index, date_column_index, file_column_index,
-                 mysql_request, *args, **kwargs):
-        super().__init__(parent, *args, **kwargs)
+    def __init__(self, parent, root, weights, checkbox_columns_index, date_column_index, file_column_index, table_data, column_names, *args, **kwargs):
+        super().__init__(parent, file_column_index, *args, **kwargs)
         self.root = root
         self.weights = weights
-        self.my_sql_request = mysql_request
         self.checkbox_columns_index = checkbox_columns_index
         self.date_column_index = date_column_index
         self.file_column_index = file_column_index
-        self.table_data, self.column_names = db_select(mysql_request)
-        self.selected_table_data, _ = db_select(mysql_request)
+        self.table_data, self.column_names = table_data, column_names
+        self.selected_table_data = table_data
         self.list_column_widgets = [0] * (len(date_column_index) + len(checkbox_columns_index))
         self.list_selection_window = [0] * (len(date_column_index) + len(checkbox_columns_index))
         self.list_label_point = [0] * (len(date_column_index) + len(checkbox_columns_index))
         self.list_label_arrow = [0] * (len(date_column_index) + len(checkbox_columns_index))
         self.create_table_frame()
-        self.create_selection_windows()
 
     def create_table_frame(self):
         # Gray row for columns
         background_frame = tkinter.Frame(self, bg='#CCCCCC')
-        background_frame.grid(column=0, row=0, columnspan=9, sticky='news')
+        background_frame.grid(column=0, row=0, columnspan=(len(self.date_column_index) + len(self.checkbox_columns_index)) + len(self.file_column_index) + 1, sticky='news')
 
         # Add weight for TABLE Frame taking all main frame space
         self.grid_columnconfigure(0, weight=1)
@@ -80,6 +77,8 @@ class TableFrame(MyTableFrame):
             label_arrow.grid(column=2, row=0, sticky='w')
             label_arrow.bind('<Button-1>', self.event_arrow_click)
             self.list_label_arrow[i] = label_arrow
+
+        self.create_selection_windows()
         self.fill_table_rows()
 
     def fill_table_rows(self):
@@ -90,7 +89,7 @@ class TableFrame(MyTableFrame):
         for i in self.checkbox_columns_index:
             for j in range(len(sorted_select_data)):
                 label = tkinter.Label(self, text=sorted_select_data[j][i], height=1, anchor='w')
-                label.grid(column=i, row=j + 1, sticky='ew')
+                label.grid(column=i, row=j + 1, sticky='news')
                 label.bind("<Button-1>", lambda event, frame=self: frame.on_click_row_selection(event))
 
         # Date column
@@ -98,16 +97,26 @@ class TableFrame(MyTableFrame):
             for j in range(len(sorted_select_data)):
                 label = tkinter.Label(self, text=sorted_select_data[j][i].strftime("%d.%m.%Y"), height=1,
                                       anchor='w')
-                label.grid(column=i, row=j + 1, sticky='ew')
+                label.grid(column=i, row=j + 1, sticky='news')
                 label.bind("<Button-1>", lambda event, frame=self: frame.on_click_row_selection(event))
 
         # Create and fill cells with files, add buttons for opening files
         for i in self.file_column_index:
             for j in range(len(sorted_select_data)):
-                button = tkinter.Button(self, text='📄',
-                                        command=lambda file_path=sorted_select_data[j][i]: open_file(file_path),
-                                        highlightthickness=0, bd=0, height=1)
-                button.grid(column=i, row=j + 1, sticky='ew')
+                button = tkinter.Button(self,
+                                        command=lambda file_path=sorted_select_data[j][i]: open_file(file_path), cursor='hand2',
+                                        highlightthickness=0, bd=0, height=1, foreground='blue', font=('TkDefaultFont', 10, 'underline'))
+                file_name = os.path.basename(sorted_select_data[j][i])
+                button.configure(text=f'{file_name}') if len(file_name) <= 15 else button.configure(text=f'{file_name[:20]}...')
+                button.grid(column=i, row=j + 1, sticky='news')
+
+        for i in range(len(sorted_select_data)):
+            file_paths = []
+            for j in self.file_column_index:
+                file_paths.append(sorted_select_data[i][j])
+            label = tkinter.Label(self, text='⫶', font=('TkDefaultFont', 14), cursor='hand2')
+            label.bind('<Button-1>', lambda event, paths=file_paths: self.open_editing_window(event, paths))
+            label.grid(row=i + 1, column=len(sorted_select_data[0]))
 
     def create_selection_windows(self):
         for i in self.checkbox_columns_index:
@@ -187,3 +196,19 @@ class TableFrame(MyTableFrame):
 
         self.clear_table_rows()
         self.fill_table_rows()
+
+    def open_editing_window(self, event, file_paths):
+        selected_row = event.widget.grid_info()["row"]
+        selected_widgets = []
+        selected_values = []
+        for child in self.winfo_children():
+            if child.grid_info()["row"] == selected_row and child.grid_info()["column"] != event.widget.grid_info()["column"]:
+                selected_widgets.append(child)
+        selected_widgets.sort(key=lambda widget: widget.grid_info()["column"])
+
+        for widget in selected_widgets:
+            selected_values.append(widget.cget("text"))
+
+        for i, j in enumerate(self.file_column_index):
+            selected_values[j] = file_paths[i]
+
