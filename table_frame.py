@@ -12,7 +12,7 @@ from myscrollableframe import *
 
 
 class TableFrame(MyTableFrame):
-    def __init__(self, parent, root, weights, checkbox_columns_index, date_column_index, file_column_index, table_data, column_names, *args, **kwargs):
+    def __init__(self, parent, root, weights, table_data, column_names, change_window, checkbox_columns_index=[], date_column_index=[], file_column_index=[], *args, **kwargs):
         super().__init__(parent, file_column_index, *args, **kwargs)
         self.root = root
         self.weights = weights
@@ -21,6 +21,7 @@ class TableFrame(MyTableFrame):
         self.file_column_index = file_column_index
         self.table_data, self.column_names = table_data, column_names
         self.selected_table_data = table_data
+        self.change_window = change_window
         self.list_column_widgets = [0] * (len(date_column_index) + len(checkbox_columns_index))
         self.list_selection_window = [0] * (len(date_column_index) + len(checkbox_columns_index))
         self.list_label_point = [0] * (len(date_column_index) + len(checkbox_columns_index))
@@ -211,4 +212,8 @@ class TableFrame(MyTableFrame):
 
         for i, j in enumerate(self.file_column_index):
             selected_values[j] = file_paths[i]
+
+        self.change_window(selected_values)
+
+
 

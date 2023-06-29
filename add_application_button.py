@@ -32,7 +32,7 @@ class AddApplicationButton(MyAddButton):
         add_window.focus_set()
         add_window.title('Add New Application')
         add_window.geometry("500x450")
-        add_window.bind('<Button-1>', lambda event: self.set_focus(event, add_window))
+        add_window.bind('<Button-1>', lambda event: self.add_window_set_focus(event, add_window))
 
         SMR_file_name = tkinter.StringVar()
         application_file_name = tkinter.StringVar()
@@ -225,11 +225,11 @@ where city_name = %s''', self.sender_country_searchbox))
             return False
 
         if self.recipient_country_searchbox.textvariable.get() == self.recipient_country_searchbox.helper_text:
-            messagebox.showerror("Empty entry", "Please, select Sender's Country or type a new one")
+            messagebox.showerror("Empty entry", "Please, select Recipient's Country or type a new one")
             return False
 
         if self.recipient_city_searchbox.textvariable.get() == self.recipient_city_searchbox.helper_text:
-            messagebox.showerror("Empty entry", "Please, select Sender's City or type a new one")
+            messagebox.showerror("Empty entry", "Please, select Recipient's City or type a new one")
             return False
 
         if self.SMR_file_path is None:
@@ -310,7 +310,3 @@ where city_name = %s''', self.sender_country_searchbox))
         self.bin_searchbox.textvariable.set(added_bin)
         self.bin_searchbox.configure(foreground=self.bin_searchbox.default_color)
         self.bin_searchbox.current_color = self.bin_searchbox.default_color
-
-    def set_focus(self, event):
-        if event.widget == self:
-            self.focus_set()

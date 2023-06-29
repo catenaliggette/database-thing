@@ -1,5 +1,5 @@
 from applications_frame import *
-from companies_frame import *
+from company_frame import *
 from tkinterdnd2 import *
 
 class App():
@@ -21,7 +21,7 @@ class App():
         tabs.pack(expand=True, fill='both', pady=(10, 10), padx=(10, 10))
 
         applications_frame = ApplicationFrame(tabs)
-        companies_frame = CompaniesFrame(tabs)
+        companies_frame = CompanyFrame(tabs)
 
         applications_frame.pack(fill='both', expand=True)
         companies_frame.pack(fill='both', expand=True)
@@ -42,4 +42,5 @@ class App():
         print("Selected Index:", selected_index)
         # Access the tab object
         tab_object = event.widget.nametowidget(event.widget.select())
+        tab_object.new_data_select()
         print("Selected Tab Object:", tab_object)

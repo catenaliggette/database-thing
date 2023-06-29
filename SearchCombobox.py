@@ -11,10 +11,10 @@ import re
 class SearchCombobox(ttk.Entry):
     def __init__(self, parent, values, helper_text="", helper_text_color='#c6c6c6', *args, **kwargs):
         self.textvariable = tk.StringVar(value="")
+        self.values = values
         vcmd = (parent.register(self.select_search_values), '%P', '%S')
         super().__init__(parent, textvariable=self.textvariable, validate='key',
                          validatecommand=vcmd, *args, **kwargs)
-        self.values = values
         self.search_values = values
         self.parent = parent
 
@@ -104,3 +104,8 @@ class SearchCombobox(ttk.Entry):
     def values_update(self, new_values):
         self.values = new_values
         self.fill_values_frame()
+
+    def set_text(self, text):
+        self.configure(foreground=self.default_color)
+        self.current_color = self.default_color
+        self.textvariable.set(text)

@@ -25,6 +25,12 @@ class HelperEntry(ttk.Entry):
         if not self.get():
             self.put_helper_text()
 
+    def set_text(self, text):
+        self.configure(foreground=self.default_color)
+        self.current_color = self.default_color
+        self.textvariable.set(text)
+
+
     def put_helper_text(self):
         self.textvariable.set(self.helper_text)
         self.configure(foreground=self.helper_text_color)

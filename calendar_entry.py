@@ -62,3 +62,4 @@ class CalendarEntry(ttk.Frame):
         self.date_label.config(foreground=self.unselected_foreground_color)
         self.textvariable.set(self.helper_text)
         self.calendar.selection_clear()
+
