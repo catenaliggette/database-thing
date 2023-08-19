@@ -1,8 +1,21 @@
 from applications_frame import *
 from company_frame import *
 from tkinterdnd2 import *
+from cities_frame import *
 
-class App():
+
+def on_tab_changed(event):
+    selected_tab = event.widget.tab(event.widget.select(), "text")
+    selected_index = event.widget.index(event.widget.select())
+    print("Selected Tab:", selected_tab)
+    print("Selected Index:", selected_index)
+    # Access the tab object
+    tab_object = event.widget.nametowidget(event.widget.select())
+    tab_object.new_data_select()
+    print("Selected Tab Object:", tab_object)
+
+
+class App:
     root = TkinterDnD.Tk()
     style = ttk.Style(root)
     root.tk.call('source', '..\\aplications_DB\\Forest-ttk-theme-master\\forest-light.tcl')
@@ -12,7 +25,7 @@ class App():
     root.option_add("*encoding", "utf-8")
 
     def __init__(self):
-        self.root.title('AAAAAAAAAAAAAAAAAAAAAAAAAAA')
+        self.root.title('а')
         self.root.geometry("1000x500")
 
     def main_window(self):
@@ -22,25 +35,17 @@ class App():
 
         applications_frame = ApplicationFrame(tabs)
         companies_frame = CompanyFrame(tabs)
+        cities_frame = CitiesFrame(tabs)
 
         applications_frame.pack(fill='both', expand=True)
         companies_frame.pack(fill='both', expand=True)
+        cities_frame.pack(fill='both', expand=True)
 
         tabs.add(applications_frame, text='Applications')
         tabs.add(companies_frame, text='Companies')
+        tabs.add(cities_frame, text='Cities')
 
-        #applications_frame.fill_frame(self.root)
 
-        tabs.bind("<<NotebookTabChanged>>", self.on_tab_changed)
+        tabs.bind("<<NotebookTabChanged>>", on_tab_changed)
 
         self.root.mainloop()
-
-    def on_tab_changed(self, event):
-        selected_tab = event.widget.tab(event.widget.select(), "text")
-        selected_index = event.widget.index(event.widget.select())
-        print("Selected Tab:", selected_tab)
-        print("Selected Index:", selected_index)
-        # Access the tab object
-        tab_object = event.widget.nametowidget(event.widget.select())
-        tab_object.new_data_select()
-        print("Selected Tab Object:", tab_object)

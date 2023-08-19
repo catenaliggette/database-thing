@@ -292,11 +292,11 @@ where Company_id = (select Company_id from company where Company_BIN=%s) and
             messagebox.showerror("Invalid entry", "Please, select Recipient's City from list")
             return False
 
-        if self.SMR_file_path is None:
+        if self.SMR_file_path is None or self.SMR_file_path == '':
             messagebox.showerror("No path found", "Please, select SMR file path")
             return False
 
-        if self.application_file_path is None:
+        if self.application_file_path is None or self.application_file_path == '':
             messagebox.showerror("No path found", "Please, select Application file path")
             return False
 

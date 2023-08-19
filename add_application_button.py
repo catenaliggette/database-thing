@@ -37,17 +37,19 @@ class AddApplicationButton(MyAddButton):
         SMR_file_name = tkinter.StringVar()
         application_file_name = tkinter.StringVar()
 
-        company_values, company_label_text = db_select('''select distinct Company_name as "Company:" from company''')
+        company_values, _ = db_select('''select distinct Company_name from company''')
         company_label = ttk.Label(add_window, text="Company:")
         company_label.grid(column=0, row=0, padx=(10, 5), pady=(10, 0), sticky='e')
-        self.company_searchbox = SearchCombobox(add_window, values=["".join(value) for value in company_values], helper_text='Name')
+        self.company_searchbox = SearchCombobox(add_window, values=["".join(value) for value in company_values],
+                                                helper_text='Name')
         self.company_searchbox.grid(column=1, row=0, padx=(5, 0), pady=(10, 0), sticky='w')
 
         bin_values, _ = db_select('''select distinct Company_BIN from company''')
         self.bin_searchbox = SearchCombobox(add_window, values=[value[0] for value in bin_values], helper_text='BIN')
         self.bin_searchbox.grid(column=2, row=0, padx=(0, 5), pady=(10, 0), sticky='w')
 
-        new_company_button = AddCompanyButton(parent=add_window, width=0, text='+', style='Accent.TButton', callback=self.add_company_callback)
+        new_company_button = AddCompanyButton(parent=add_window, width=0, text='+', style='Accent.TButton',
+                                              callback=self.add_company_callback)
         new_company_button.grid(row=0, column=3, sticky='w', pady=(10, 0))
 
         self.company_searchbox.textvariable.trace('w', lambda name, index, mode,
@@ -153,7 +155,8 @@ where city_name = %s''', self.sender_country_searchbox))
         cancel_button = ttk.Button(add_window, text="Cansel", command=add_window.destroy)
         cancel_button.grid(column=1, columnspan=2, row=9, sticky='e', padx=70)
 
-        add_button = ttk.Button(add_window, text="Add", command=lambda: self.add_application(add_window), style='Accent.TButton')
+        add_button = ttk.Button(add_window, text="Add", command=lambda: self.add_application(add_window),
+                                style='Accent.TButton')
         add_button.grid(column=2, columnspan=2, row=9, sticky='e', padx=5)
 
     def set_drop_file_path(self, event, textvariable, file_path_set_func):
@@ -198,8 +201,9 @@ where city_name = %s''', self.sender_country_searchbox))
             messagebox.showerror("Empty entry", "Please, select Company BIN")
             return False
 
-        connected_value, _ = db_select('''select Company_id from company where Company_name = %s and Company_BIN = %s''',
-                                       (self.company_searchbox.textvariable.get(), self.bin_searchbox.textvariable.get()))
+        connected_value, _ = db_select(
+            '''select Company_id from company where Company_name = %s and Company_BIN = %s''',
+            (self.company_searchbox.textvariable.get(), self.bin_searchbox.textvariable.get()))
         if not connected_value:
             messagebox.showerror("Entries not found", "Combination of BIN and Company name was not found")
             return False
@@ -232,11 +236,11 @@ where city_name = %s''', self.sender_country_searchbox))
             messagebox.showerror("Empty entry", "Please, select Recipient's City or type a new one")
             return False
 
-        if self.SMR_file_path is None:
+        if self.SMR_file_path is None or self.SMR_file_path == '':
             messagebox.showerror("No path found", "Please, select SMR file path")
             return False
 
-        if self.application_file_path is None:
+        if self.application_file_path is None or self.application_file_path == '':
             messagebox.showerror("No path found", "Please, select Application file path")
             return False
 
@@ -259,7 +263,8 @@ where city_name = %s''', self.sender_country_searchbox))
                                         where country_name = %s and city_name =%s''', (s_country, s_city))
         if not connected_value:
             city_values, _ = db_select('''select distinct city_name from cities where city_name=%s''', (s_city,))
-            country_values, _ = db_select('''select distinct country_name from countries where country_name=%s''', (s_country,))
+            country_values, _ = db_select('''select distinct country_name from countries where country_name=%s''',
+                                          (s_country,))
 
             if not country_values:
                 db_commit('''insert into countries (country_name) values (%s)''', (s_country,))
@@ -271,7 +276,8 @@ where city_name = %s''', self.sender_country_searchbox))
                                         where country_name = %s and city_name =%s''', (r_country, r_city))
         if not connected_value:
             city_values, _ = db_select('''select distinct city_name from cities where city_name=%s''', (r_city,))
-            country_values, _ = db_select('''select distinct country_name from countries where country_name=%s''', (r_country,))
+            country_values, _ = db_select('''select distinct country_name from countries where country_name=%s''',
+                                          (r_country,))
 
             if not country_values:
                 db_commit('''insert into countries (country_name) values (%s)''',
@@ -287,8 +293,7 @@ where city_name = %s''', self.sender_country_searchbox))
         db_commit('''insert into transport_applications (Company_id, application_date, Car_id, freight_cost, senders_city_id, recipients_city_id, SMR_path, application_path)
         select (select Company_id from company where Company_name = %s), %s, (select Car_id from cars where Car_number=%s), %s,
         (select City_id from cities where city_name=%s), (select City_id from cities where city_name=%s), %s, %s''',
-        (company, date, car, cost, s_city, r_city, smr, appl))
-
+                  (company, date, car, cost, s_city, r_city, smr, appl))
 
     def add_company_callback(self):
         old_company_values = self.company_searchbox.values

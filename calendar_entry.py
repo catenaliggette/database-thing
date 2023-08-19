@@ -6,7 +6,8 @@ from datetime import datetime
 
 
 class CalendarEntry(ttk.Frame):
-    def __init__(self, parent_widget, unselected_date_value, callback=None, unselected_foreground_color='#c6c6c6', *args, **kwargs):
+    def __init__(self, parent_widget, unselected_date_value, callback=None, unselected_foreground_color='#c6c6c6',
+                 *args, **kwargs):
         super().__init__(parent_widget, *args, **kwargs)
         self.configure(style='Card', padding=7, cursor="xterm")
         self.parent_widget = parent_widget
@@ -17,7 +18,8 @@ class CalendarEntry(ttk.Frame):
         self.calendar_window = None
         self.calendar = None
 
-        self.date_label = ttk.Label(self, textvariable=self.textvariable, foreground=unselected_foreground_color, width=11, anchor='center')
+        self.date_label = ttk.Label(self, textvariable=self.textvariable, foreground=unselected_foreground_color,
+                                    width=11, anchor='center')
         self.date_label.grid(column=0, row=0)
 
         self.create_calendar()
@@ -37,7 +39,8 @@ class CalendarEntry(ttk.Frame):
             self.calendar.selection_set(datetime.strptime(self.date_label.cget("text"), "%d.%m.%Y"))
 
         self.calendar.bind("<<CalendarSelected>>", lambda select_event: self.select_date())
-        self.calendar_window.bind("<FocusOut>", lambda focus_event: event_window_loss_focus(focus_event, self.hide_selection_window))
+        self.calendar_window.bind("<FocusOut>", lambda focus_event: event_window_loss_focus(focus_event,
+                                                                                            self.hide_selection_window))
 
     def open_calendar(self, event):
         x = self.winfo_rootx()
@@ -62,4 +65,3 @@ class CalendarEntry(ttk.Frame):
         self.date_label.config(foreground=self.unselected_foreground_color)
         self.textvariable.set(self.helper_text)
         self.calendar.selection_clear()
-

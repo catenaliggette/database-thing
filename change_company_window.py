@@ -100,7 +100,7 @@ from transport_applications as ta
 inner join company c on ta.Company_id = c.Company_id
 where Company_BIN = %s''', (self.current_values[1],))
         if company_applications:
-            warnings_window = tkinter.messagebox.askquestion('Delete Appications', "All Applications from this company will be removed from the database.\nProceed?", icon='warning')
+            warnings_window = tkinter.messagebox.askquestion('Delete Applications', "All Applications from this company will be removed from the database.\nProceed?", icon='warning')
             if warnings_window == 'yes':
                 db_commit('''delete ta
 from transport_applications as ta
