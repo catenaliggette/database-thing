@@ -216,7 +216,6 @@ where Company_BIN = %s and application_date = %s and car_number = %s and freight
     def set_select_file_explorer(self, event, textvariable, file_path_set_func):
         file_path = filedialog.askopenfilename()
         textvariable.set(os.path.basename(file_path))
-        print(file_path)
         file_path_set_func(file_path)
         event.widget.winfo_toplevel().focus_set()
 

@@ -7,12 +7,9 @@ from cities_frame import *
 def on_tab_changed(event):
     selected_tab = event.widget.tab(event.widget.select(), "text")
     selected_index = event.widget.index(event.widget.select())
-    print("Selected Tab:", selected_tab)
-    print("Selected Index:", selected_index)
     # Access the tab object
     tab_object = event.widget.nametowidget(event.widget.select())
     tab_object.new_data_select()
-    print("Selected Tab Object:", tab_object)
 
 
 class App:

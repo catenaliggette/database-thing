@@ -43,7 +43,5 @@ def open_file(file_path):
 
 
 def event_window_loss_focus(event, loss_focus_True_callback):
-    print(f'Focused widget: {event.widget.focus_get()}')
-    print(f'Widget that lost focus: {event.widget}')
     if event.widget.winfo_toplevel().focus_get() is None:
         loss_focus_True_callback()
