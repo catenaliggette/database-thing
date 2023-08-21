@@ -30,7 +30,7 @@ class AddApplicationButton(MyAddButton):
         add_window = tkinter.Toplevel(parent.winfo_toplevel())
         add_window.grab_set()
         add_window.focus_set()
-        add_window.title('Add New Application')
+        add_window.title('Добавление новой Заявки')
         add_window.geometry("500x450")
         add_window.bind('<Button-1>', lambda event: self.add_window_set_focus(event, add_window))
 
@@ -38,14 +38,14 @@ class AddApplicationButton(MyAddButton):
         application_file_name = tkinter.StringVar()
 
         company_values, _ = db_select('''select distinct Company_name from company''')
-        company_label = ttk.Label(add_window, text="Company:")
+        company_label = ttk.Label(add_window, text="Компания:")
         company_label.grid(column=0, row=0, padx=(10, 5), pady=(10, 0), sticky='e')
         self.company_searchbox = SearchCombobox(add_window, values=["".join(value) for value in company_values],
-                                                helper_text='Name')
+                                                helper_text='Название')
         self.company_searchbox.grid(column=1, row=0, padx=(5, 0), pady=(10, 0), sticky='w')
 
         bin_values, _ = db_select('''select distinct Company_BIN from company''')
-        self.bin_searchbox = SearchCombobox(add_window, values=[value[0] for value in bin_values], helper_text='BIN')
+        self.bin_searchbox = SearchCombobox(add_window, values=[value[0] for value in bin_values], helper_text='БИН')
         self.bin_searchbox.grid(column=2, row=0, padx=(0, 5), pady=(10, 0), sticky='w')
 
         new_company_button = AddCompanyButton(parent=add_window, width=0, text='+', style='Accent.TButton',
@@ -62,19 +62,19 @@ class AddApplicationButton(MyAddButton):
                                                                                                                      '''select Company_name from company where Company_BIN = %s''',
                                                                                                                      self.company_searchbox))
 
-        date_label = ttk.Label(add_window, text="Application date:")
+        date_label = ttk.Label(add_window, text="Дата Заявки:")
         date_label.grid(column=0, row=1, padx=(10, 5), sticky='e', pady=(5, 0))
         self.date_entry = CalendarEntry(add_window, unselected_foreground_color='#c6c6c6',
-                                        unselected_date_value='dd.mm.yyyy')
+                                        unselected_date_value='дд.мм.гггг')
         self.date_entry.grid(column=1, row=1, sticky='w', padx=5, pady=(5, 0))
 
-        car_values, car_label_text = db_select('''select distinct car_number as "Car Number:" from cars''')
+        car_values, car_label_text = db_select('''select distinct car_number as "Номер машины:" from cars''')
         car_label = ttk.Label(add_window, text=car_label_text[0])
         car_label.grid(column=0, row=3, padx=(10, 5), sticky='e', pady=(5, 0))
         self.car_searchbox = SearchCombobox(add_window, values=["".join(value) for value in car_values])
         self.car_searchbox.grid(column=1, row=3, sticky='w', padx=5, pady=(5, 0))
 
-        cost_label = ttk.Label(add_window, text='Freight cost:')
+        cost_label = ttk.Label(add_window, text='Стоимость:')
         cost_label.grid(column=0, row=4, padx=(10, 5), sticky='e', pady=(5, 0))
         self.cost_entry = ttk.Entry(add_window)
         self.cost_entry.grid(column=1, row=4, sticky='w', padx=5, pady=(5, 0))
@@ -82,18 +82,18 @@ class AddApplicationButton(MyAddButton):
         country_values, _ = db_select('''select distinct country_name from countries''')
         city_values, _ = db_select('''select distinct city_name from cities''')
 
-        sender_label = ttk.Label(add_window, text="Sender:")
+        sender_label = ttk.Label(add_window, text="Отправитель:")
         sender_label.grid(column=0, row=5, padx=(10, 5), sticky='e', pady=(5, 0))
-        self.sender_country_searchbox = SearchCombobox(add_window, values=country_values, helper_text='Country')
+        self.sender_country_searchbox = SearchCombobox(add_window, values=country_values, helper_text='Страна')
         self.sender_country_searchbox.grid(column=1, row=5, padx=(5, 0), sticky='w', pady=(5, 0))
-        self.sender_city_searchbox = SearchCombobox(add_window, values=city_values, helper_text='City')
+        self.sender_city_searchbox = SearchCombobox(add_window, values=city_values, helper_text='Город')
         self.sender_city_searchbox.grid(column=2, row=5, sticky='w', pady=(5, 0))
 
-        recipient_label = ttk.Label(add_window, text="Recipient:")
+        recipient_label = ttk.Label(add_window, text="Получатель:")
         recipient_label.grid(column=0, row=6, padx=(10, 5), sticky='e', pady=(5, 0))
-        self.recipient_country_searchbox = SearchCombobox(add_window, values=country_values, helper_text='Country')
+        self.recipient_country_searchbox = SearchCombobox(add_window, values=country_values, helper_text='Страна')
         self.recipient_country_searchbox.grid(column=1, row=6, padx=(5, 0), sticky='w', pady=(5, 0))
-        self.recipient_city_searchbox = SearchCombobox(add_window, values=city_values, helper_text='City')
+        self.recipient_city_searchbox = SearchCombobox(add_window, values=city_values, helper_text='Город')
         self.recipient_city_searchbox.grid(column=2, row=6, sticky='w', pady=(5, 0))
 
         self.sender_city_searchbox.textvariable.trace('w', lambda name, index, mode,
@@ -109,7 +109,7 @@ where city_name = %s''', self.sender_country_searchbox))
         inner join cities c on countries.country_id = c.country_id
         where city_name = %s''', self.recipient_country_searchbox))
 
-        SMR_file_frame = ttk.LabelFrame(add_window, text='SMR', width=200, height=100)
+        SMR_file_frame = ttk.LabelFrame(add_window, text='СМР', width=200, height=100)
         SMR_file_frame.grid_propagate(False)
         SMR_file_frame.grid(column=0, columnspan=2, row=7, pady=(20, 0))
         SMR_file_frame.drop_target_register(DND_ALL)
@@ -117,7 +117,7 @@ where city_name = %s''', self.sender_country_searchbox))
                                 lambda event: self.set_drop_file_path(event, SMR_file_name, self.set_SMR_file_path))
         SMR_file_frame.columnconfigure(0, weight=1)
         SMR_file_frame.rowconfigure(0, weight=1)
-        SMR_file_text = ttk.Label(SMR_file_frame, text=f'Press to Select file\n or drag and drop it here',
+        SMR_file_text = ttk.Label(SMR_file_frame, text=f'Нажмите, чтобы выбрать Файл\n или перетащите в эту область',
                                   foreground='#c6c6c6', anchor='center')
         SMR_file_text.grid(sticky='news', column=0, row=0, pady=5, padx=5)
 
@@ -129,7 +129,7 @@ where city_name = %s''', self.sender_country_searchbox))
         SMR_file_text.bind('<Button-1>',
                            lambda event: self.set_select_file_explorer(event, SMR_file_name, self.set_SMR_file_path))
 
-        application_file_frame = ttk.LabelFrame(add_window, text='Application', width=200, height=100)
+        application_file_frame = ttk.LabelFrame(add_window, text='Заявка', width=200, height=100)
         application_file_frame.grid_propagate(False)
         application_file_frame.grid(column=2, columnspan=2, row=7, pady=(20, 0))
         application_file_frame.drop_target_register(DND_ALL)
@@ -138,7 +138,7 @@ where city_name = %s''', self.sender_country_searchbox))
         application_file_frame.columnconfigure(0, weight=1)
         application_file_frame.rowconfigure(0, weight=1)
         application_file_text = ttk.Label(application_file_frame,
-                                          text=f'Press to Select file\n or drag and drop it here', foreground='#c6c6c6',
+                                          text=f'Нажмите, чтобы выбрать Файл\n или перетащите в эту область', foreground='#c6c6c6',
                                           anchor='center')
         application_file_text.grid(sticky='news', column=0, row=0, pady=5, padx=5)
 
@@ -152,17 +152,17 @@ where city_name = %s''', self.sender_country_searchbox))
                                    lambda event: self.set_select_file_explorer(event, application_file_name,
                                                                                self.set_application_file_path))
 
-        cancel_button = ttk.Button(add_window, text="Cansel", command=add_window.destroy)
+        cancel_button = ttk.Button(add_window, text="Отмена", command=add_window.destroy)
         cancel_button.grid(column=1, columnspan=2, row=9, sticky='e', padx=70)
 
-        add_button = ttk.Button(add_window, text="Add", command=lambda: self.add_application(add_window),
+        add_button = ttk.Button(add_window, text="Добавить", command=lambda: self.add_application(add_window),
                                 style='Accent.TButton')
         add_button.grid(column=2, columnspan=2, row=9, sticky='e', padx=5)
 
     def set_drop_file_path(self, event, textvariable, file_path_set_func):
         files = self.winfo_toplevel().tk.splitlist(event.data)
         if len(files) != 1:
-            messagebox.showerror("Multiple files selected", "Please, select or drag and drop one file")
+            messagebox.showerror("Выбрано несколько файлов", "Пожалуйста, выберите или перетащите один файл")
 
         textvariable.set(os.path.basename(files[0]))
         file_path_set_func(files[0])
@@ -194,54 +194,54 @@ where city_name = %s''', self.sender_country_searchbox))
 
     def varify_new_application(self):
         if self.company_searchbox.textvariable.get() == self.company_searchbox.helper_text:
-            messagebox.showerror("Empty entry", "Please, select Company name")
+            messagebox.showerror("Пустое поле", "Пожалуйста, выберите название Компании")
             return False
 
         if self.bin_searchbox.textvariable.get() == self.bin_searchbox.helper_text:
-            messagebox.showerror("Empty entry", "Please, select Company BIN")
+            messagebox.showerror("Пустое поле", "Пожалуйста, выберите БИН компании")
             return False
 
         connected_value, _ = db_select(
             '''select Company_id from company where Company_name = %s and Company_BIN = %s''',
             (self.company_searchbox.textvariable.get(), self.bin_searchbox.textvariable.get()))
         if not connected_value:
-            messagebox.showerror("Entries not found", "Combination of BIN and Company name was not found")
+            messagebox.showerror("Записи не найдены", "Комбинация БИН и названия компании не найдена")
             return False
 
         if self.date_entry.textvariable.get() == self.date_entry.helper_text:
-            messagebox.showerror("Empty entry", "Please, select Application's Date")
+            messagebox.showerror("Пустое поле", "Пожалуйста, выберите Дату заявки")
             return False
 
         if self.car_searchbox.textvariable.get() == self.car_searchbox.helper_text:
-            messagebox.showerror("Empty entry", "Please, select Car's Number or type a new one")
+            messagebox.showerror("Пустое поле", "Пожалуйста, выберите Номер Автомобиля или введите новый")
             return False
 
         if self.cost_entry.get() == "":
-            messagebox.showerror("Empty entry", "Please, type freight cost")
+            messagebox.showerror("Пустое поле", "Пожалуйста, введите Стоимость перевозки")
             return False
 
         if self.sender_country_searchbox.textvariable.get() == self.sender_country_searchbox.helper_text:
-            messagebox.showerror("Empty entry", "Please, select Sender's Country or type a new one")
+            messagebox.showerror("Пустое поле", "Пожалуйста, выберите Страну Отправителя или введите новую")
             return False
 
         if self.sender_city_searchbox.textvariable.get() == self.sender_city_searchbox.helper_text:
-            messagebox.showerror("Empty entry", "Please, select Sender's City or type a new one")
+            messagebox.showerror("Пустое поле", "Пожалуйста, выберите Город Отправителя или введите новый")
             return False
 
         if self.recipient_country_searchbox.textvariable.get() == self.recipient_country_searchbox.helper_text:
-            messagebox.showerror("Empty entry", "Please, select Recipient's Country or type a new one")
+            messagebox.showerror("Пустое поле", "Пожалуйста, выберите Страну Получателя или введите новую")
             return False
 
         if self.recipient_city_searchbox.textvariable.get() == self.recipient_city_searchbox.helper_text:
-            messagebox.showerror("Empty entry", "Please, select Recipient's City or type a new one")
+            messagebox.showerror("Пустое поле", "Пожалуйста, выберите Город Получателя или введите новый")
             return False
 
         if self.SMR_file_path is None or self.SMR_file_path == '':
-            messagebox.showerror("No path found", "Please, select SMR file path")
+            messagebox.showerror("Путь к файлу не найден", "Пожалуйста, выберите путь к файлу СМР")
             return False
 
         if self.application_file_path is None or self.application_file_path == '':
-            messagebox.showerror("No path found", "Please, select Application file path")
+            messagebox.showerror("Путь к файлу не найден", "Пожалуйста, выберите путь к файлу Заявки")
             return False
 
         return True

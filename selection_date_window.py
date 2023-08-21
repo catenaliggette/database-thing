@@ -12,7 +12,7 @@ class SelectionDateWindow(tkinter.Toplevel):
         super().__init__(root)
         self.root = root
         self.callback = callback
-        self.unselected_date_value = 'dd.mm.yyyy'
+        self.unselected_date_value = 'дд.мм.гггг'
         self.list_date_entry = []
         self.list_clear_label = []
         self.create_selection_window()

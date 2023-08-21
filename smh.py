@@ -37,9 +37,9 @@ def open_file(file_path):
         try:
             os.startfile(file_path)
         except subprocess.CalledProcessError:
-            messagebox.showinfo("Failed to open the file.")
+            messagebox.showinfo("Не удалось открыть файл")
     else:
-        messagebox.showerror("File Not Found", f"The file '{file_path}' doesn't exist!")
+        messagebox.showerror("Файл не найден", f"Файл '{file_path}' не существует!")
 
 
 def event_window_loss_focus(event, loss_focus_True_callback):

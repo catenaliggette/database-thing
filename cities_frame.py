@@ -40,7 +40,7 @@ where country_name = %s"""
         add_button = AddCityButton(parent=self, text='Add', style='Accent.TButton', callback=self.new_data_select)
         add_button.grid(row=0, column=0, sticky='w')
 
-        self.search_entry = HelperEntry(self, helper_text='Enter city or country name...', width=100)
+        self.search_entry = HelperEntry(self, helper_text='Введите название города или страны...', width=100)
         self.search_entry.grid(column=0, row=0, sticky='e', padx=(0, 100))
 
         self.search_entry.textvariable.trace('w', lambda *args: self.new_data_select())

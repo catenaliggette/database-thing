@@ -24,7 +24,7 @@ class SelectionOptionWindow(tkinter.Toplevel):
 
         self.withdraw()
 
-        select_all_button = ttk.Button(selection_frame, text='Select All', command=self.select_all_button)
+        select_all_button = ttk.Button(selection_frame, text='Выбрать Все', command=self.select_all_button)
         select_all_button.pack(anchor='w')
 
         self.scroll_frame = ScrollableFrame(self)

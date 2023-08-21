@@ -14,21 +14,21 @@ class ChangeCountryWindow(tkinter.Toplevel):
     def create_change_window(self):
         self.grab_set()
         self.focus_set()
-        self.title('Change Country')
+        self.title('Редактирование Страны')
         self.geometry("300x110")
         self.bind('<Button-1>', lambda event: self.set_focus(event))
 
-        self.country_entry = HelperEntry(self, helper_text='Country')
+        self.country_entry = HelperEntry(self, helper_text='Страна')
         self.country_entry.set_text(self.current_country_name)
         self.country_entry.grid(column=0, row=0, padx=(15, 5), pady=(10, 0), sticky='ew')
 
-        cancel_button = ttk.Button(self, text='Cancel', command=self.destroy)
+        cancel_button = ttk.Button(self, text='Отмена', command=self.destroy)
         cancel_button.grid(column=0, columnspan=2, row=2, sticky='e', padx=(0, 105), pady=(20, 0))
 
-        save_button = ttk.Button(self, text='Save', command=self.change_country, style='Accent.TButton')
+        save_button = ttk.Button(self, text='Сохранить', command=self.change_country, style='Accent.TButton')
         save_button.grid(column=1, row=2, sticky='e', pady=(20, 0), padx=5)
 
-        delete_button = ttk.Button(self, text='Delete', command=self.delete_country, width=0)
+        delete_button = ttk.Button(self, text='Удалить', command=self.delete_country, width=0)
         delete_button.grid(column=0, row=2, sticky='w', padx=15, pady=(20, 0))
 
         self.grid_columnconfigure(0, weight=1)
@@ -46,7 +46,7 @@ class ChangeCountryWindow(tkinter.Toplevel):
 
     def varify_new_changes(self):
         if self.country_entry.get() == self.country_entry.helper_text:
-            messagebox.showerror("Empty entry", "Please, type Country name")
+            messagebox.showerror("Пустое поле", "Пожалуйста, выберите название Страны")
             return False
         return True
 
@@ -62,8 +62,8 @@ inner join countries c on cities.country_id = c.country_id
 where country_name = %s''', (self.current_country_name,))
         print(cities)
         if cities:
-            question_window = tkinter.messagebox.askquestion('Delete Country',
-                                                             "All Cities from this country will be removed from the database.\nProceed?",
+            question_window = tkinter.messagebox.askquestion('Удаление Страны',
+                                                             "Все Города этой страны будут удалены из базы данных.\nПродолжить?",
                                                              icon='warning')
             if question_window == 'yes':
                 db_commit('''delete cc
@@ -74,8 +74,8 @@ where country_name = %s''', (self.current_country_name,))
                 self.callback()
                 self.destroy()
         else:
-            question_window = tkinter.messagebox.askquestion('Delete Country',
-                                                             "R U Sure?",
+            question_window = tkinter.messagebox.askquestion('Удаление Страны',
+                                                             "Вы уверены?",
                                                              icon='question')
             if question_window == 'yes':
                 db_commit('''delete from countries where country_name = %s''', (self.current_country_name,))

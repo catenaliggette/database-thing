@@ -14,7 +14,7 @@ class ApplicationFrame(ttk.Frame):
         super().__init__(parent, *args, **kwargs)
 
         self.query = """
-SELECT Company_name as "Имя Компании", Company_BIN as "БИН", application_date as "Дата заявки", car_number as "Транспорт", freight_cost as "Стоимость", senders_address as "Адрес отправителя", recipients_address as "Адрес получателя", SMR_path as "CMR", application_path as "Заявка"
+SELECT Company_name as "Имя Компании", Company_BIN as "БИН", application_date as "Дата заявки", car_number as "Транспорт", freight_cost as "Стоимость", senders_address as "Адрес отправителя", recipients_address as "Адрес получателя", SMR_path as "СМР", application_path as "Заявка"
 FROM (
     SELECT
         c.Company_name,
@@ -60,14 +60,14 @@ FROM (
                                           callback=self.new_data_select)
         add_button.grid(row=0, column=0, sticky='w')
 
-        helper_text = 'Enter application details...'
-        self.search_entry = HelperEntry(self, helper_text='Enter application details...', width=100)
+        helper_text = 'Введите информацию о Заявке...'
+        self.search_entry = HelperEntry(self, helper_text='Введите информацию о Заявке...', width=100)
         self.search_entry.grid(column=0, row=0, sticky='e', padx=(0, 100))
 
         # self.search_entry.textvariable.trace('w', lambda *args: self.search_query_update())
         self.search_entry.bind('<KeyRelease>', self.search_query_update)
 
-        clear_button = ttk.Button(self, text='Clear', command=self.clear_search_entry)
+        clear_button = ttk.Button(self, text='Очистить', command=self.clear_search_entry)
         clear_button.grid(column=0, row=0, sticky='e')
 
     def new_data_select(self):

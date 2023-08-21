@@ -19,26 +19,26 @@ class ChangeCityWindow(tkinter.Toplevel):
     def create_change_window(self):
         self.grab_set()
         self.focus_set()
-        self.title('Change City')
+        self.title('Редактирование Города')
         self.geometry("340x110")
         self.bind('<Button-1>', lambda event: self.set_focus(event))
 
-        self.city_entry = HelperEntry(self, helper_text='City')
+        self.city_entry = HelperEntry(self, helper_text='Город')
         self.city_entry.set_text(self.current_city_name)
         self.city_entry.grid(column=0, row=0, padx=(15, 5), pady=(10, 0), sticky='w')
 
         country_values, _ = db_select('''select distinct country_name from countries''')
-        self.country_entry = SearchCombobox(self, helper_text='Country', values=country_values)
+        self.country_entry = SearchCombobox(self, helper_text='Страна', values=country_values)
         self.country_entry.set_text(self.current_country_name)
         self.country_entry.grid(column=1, row=0, padx=(0, 5), pady=(10, 0), sticky='w')
 
-        cancel_button = ttk.Button(self, text='Cancel', command=self.destroy)
+        cancel_button = ttk.Button(self, text='Отмена', command=self.destroy)
         cancel_button.grid(column=0, columnspan=2, row=2, sticky='e', padx=(0, 105), pady=(20, 0))
 
-        save_button = ttk.Button(self, text='Save', command=self.change_city, style='Accent.TButton')
+        save_button = ttk.Button(self, text='Сохранить', command=self.change_city, style='Accent.TButton')
         save_button.grid(column=1, row=2, sticky='e', padx=5, pady=(20, 0))
 
-        delete_button = ttk.Button(self, text='Delete', command=self.delete_city, width=0)
+        delete_button = ttk.Button(self, text='Удалить', command=self.delete_city, width=0)
         delete_button.grid(column=0, row=2, sticky='w', padx=15, pady=(20, 0))
 
     def change_city(self):
@@ -53,11 +53,11 @@ class ChangeCityWindow(tkinter.Toplevel):
 
     def varify_new_changes(self):
         if self.city_entry.get() == self.city_entry.helper_text:
-            messagebox.showerror("Empty entry", "Please, type City name")
+            messagebox.showerror("Пустое поле", "Пожалуйста, введите название Города")
             return False
 
         if self.country_entry.get() == self.country_entry.helper_text:
-            messagebox.showerror("Empty entry", "Please, select Country's Name or type a new one")
+            messagebox.showerror("Пустое поле", "Пожалуйста, выберите название Страны или введите новое")
             return False
 
         return True
@@ -88,8 +88,8 @@ set city_name = %s, cities.country_id = (select d.country_id from countries as d
 where city_name = %s and country_name = %s''', (city, country, self.current_city_name, self.current_country_name))
 
     def delete_city(self):
-        question_window = tkinter.messagebox.askquestion('Delete City',
-                                                         "R U Sure?",
+        question_window = tkinter.messagebox.askquestion('Удаление Города',
+                                                         "Вы уверены?",
                                                          icon='question')
         if question_window == 'yes':
             db_commit('''delete from cities

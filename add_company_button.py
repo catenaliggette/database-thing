@@ -17,32 +17,32 @@ class AddCompanyButton(MyAddButton):
         add_window = tkinter.Toplevel(parent.winfo_toplevel())
         add_window.grab_set()
         add_window.focus_set()
-        add_window.title('Add New Company')
+        add_window.title('Добавление новой Компании')
         add_window.geometry("430x170")
         add_window.bind('<Button-1>', lambda event: self.add_window_set_focus(event, add_window))
 
-        company_label = ttk.Label(add_window, text="Company:")
+        company_label = ttk.Label(add_window, text="Компания:")
         company_label.grid(column=0, row=0, padx=(10, 5), pady=(10, 0), sticky='e')
 
-        self.company_entry = HelperEntry(add_window, helper_text='Name')
+        self.company_entry = HelperEntry(add_window, helper_text='Название')
         self.company_entry.grid(column=1, row=0, padx=(5, 5), pady=(10, 0), sticky='w')
 
-        self.bin_entry = HelperEntry(add_window, helper_text='BIN')
+        self.bin_entry = HelperEntry(add_window, helper_text='БИН')
         self.bin_entry.grid(column=2, row=0, padx=(0, 5), pady=(10, 0), sticky='w')
 
-        contacts_label = ttk.Label(add_window, text='Contacts:')
+        contacts_label = ttk.Label(add_window, text='Контакты:')
         contacts_label.grid(column=0, row=1, padx=(10, 5), pady=(10, 35), sticky='e')
 
         self.email_entry = HelperEntry(add_window, helper_text='Email')
         self.email_entry.grid(column=1, row=1, padx=(5, 0), pady=(10, 35), sticky='w')
 
-        self.phone_entry = HelperEntry(add_window, helper_text='Phone number')
+        self.phone_entry = HelperEntry(add_window, helper_text='Номер телефона')
         self.phone_entry.grid(column=2, row=1, padx=(0, 5), pady=(10, 35), sticky='w')
 
-        cancel_button = ttk.Button(add_window, text='Cancel', command=add_window.destroy)
+        cancel_button = ttk.Button(add_window, text='Отмена', command=add_window.destroy)
         cancel_button.grid(column=1, columnspan=2, row=2, sticky='e', padx=(0, 105))
 
-        add_button = ttk.Button(add_window, text='Add', command=lambda: self.add_company(add_window),
+        add_button = ttk.Button(add_window, text='Добавить', command=lambda: self.add_company(add_window),
                                 style='Accent.TButton')
         add_button.grid(column=2, row=2, sticky='e', padx=5)
 
@@ -54,25 +54,25 @@ class AddCompanyButton(MyAddButton):
 
     def varify_new_company(self):
         if self.company_entry.get() == self.company_entry.helper_text:
-            messagebox.showerror("Empty entry", "Please, type Company name")
+            messagebox.showerror("Пустое поле", "Пожалуйста, введите название Компании")
             return False
 
         if self.bin_entry.get() == self.bin_entry.helper_text:
-            messagebox.showerror("Empty entry", "Please, type Company's BIN")
+            messagebox.showerror("Пустое поле", "Пожалуйста, введите БИН компании")
             return False
 
         if self.email_entry.get() == self.email_entry.helper_text:
-            messagebox.showerror("Empty entry", "Please, type Email")
+            messagebox.showerror("Пустое поле", "Пожалуйста, введите Email")
             return False
 
         if self.phone_entry.get() == self.phone_entry.helper_text:
-            messagebox.showerror("Empty entry", "Please, type Phone number")
+            messagebox.showerror("Пустое поле", "Пожалуйста, введите Номер Телефона")
             return False
 
         try:
             int(self.bin_entry.get())
         except ValueError:
-            messagebox.showerror("Invalid value", "Company's BIN must be a number")
+            messagebox.showerror("Недопустимое значение", "БИН компании должен быть числом")
             return False
 
         return True

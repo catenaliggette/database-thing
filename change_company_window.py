@@ -17,39 +17,39 @@ class ChangeCompanyWindow(tkinter.Toplevel):
     def create_change_window(self):
         self.grab_set()
         self.focus_set()
-        self.title('Change Company')
+        self.title('Редактирование Компании')
         self.geometry("430x170")
         self.bind('<Button-1>', lambda event: self.set_focus(event))
 
-        company_label = ttk.Label(self, text="Company:")
+        company_label = ttk.Label(self, text="Компания:")
         company_label.grid(column=0, row=0, padx=(10, 5), pady=(10, 0), sticky='e')
 
-        self.company_entry = HelperEntry(self, helper_text='Name')
+        self.company_entry = HelperEntry(self, helper_text='Название')
         self.company_entry.set_text(self.current_values[0])
         self.company_entry.grid(column=1, row=0, padx=(5, 5), pady=(10, 0), sticky='w')
 
-        self.bin_entry = HelperEntry(self, helper_text='BIN')
+        self.bin_entry = HelperEntry(self, helper_text='БИН')
         self.bin_entry.set_text(self.current_values[1])
         self.bin_entry.grid(column=2, row=0, padx=(0, 5), pady=(10, 0), sticky='w')
 
-        contacts_label = ttk.Label(self, text='Contacts:')
+        contacts_label = ttk.Label(self, text='Контакты:')
         contacts_label.grid(column=0, row=1, padx=(10, 5), pady=(10, 35), sticky='e')
 
         self.email_entry = HelperEntry(self, helper_text='Email')
         self.email_entry.set_text(self.current_values[2])
         self.email_entry.grid(column=1, row=1, padx=(5, 0), pady=(10, 35), sticky='w')
 
-        self.phone_entry = HelperEntry(self, helper_text='Phone number')
+        self.phone_entry = HelperEntry(self, helper_text='Номер телефона')
         self.phone_entry.set_text(self.current_values[3])
         self.phone_entry.grid(column=2, row=1, padx=(0, 5), pady=(10, 35), sticky='w')
 
-        cancel_button = ttk.Button(self, text='Cancel', command=self.destroy)
+        cancel_button = ttk.Button(self, text='Отмена', command=self.destroy)
         cancel_button.grid(column=1, columnspan=2, row=2, sticky='e', padx=(0, 105))
 
-        save_button = ttk.Button(self, text='Save', command=lambda: self.change_company(), style='Accent.TButton')
+        save_button = ttk.Button(self, text='Сохранить', command=lambda: self.change_company(), style='Accent.TButton')
         save_button.grid(column=2, row=2, sticky='e', padx=5)
 
-        delete_button = ttk.Button(self, text='Delete', command=self.delete_company, width=0)
+        delete_button = ttk.Button(self, text='Удалить', command=self.delete_company, width=0)
         delete_button.grid(column=0, row=2, sticky='w', padx=15)
 
     def change_company(self):
@@ -64,25 +64,25 @@ class ChangeCompanyWindow(tkinter.Toplevel):
 
     def varify_new_changes(self):
         if self.company_entry.get() == self.company_entry.helper_text:
-            messagebox.showerror("Empty entry", "Please, type Company name")
+            messagebox.showerror("Пустое поле", "Пожалуйста, введите название Компании")
             return False
 
         if self.bin_entry.get() == self.bin_entry.helper_text:
-            messagebox.showerror("Empty entry", "Please, type Company's BIN")
+            messagebox.showerror("Пустое поле", "Пожалуйста, введите БИН компании")
             return False
 
         if self.email_entry.get() == self.email_entry.helper_text:
-            messagebox.showerror("Empty entry", "Please, type Email")
+            messagebox.showerror("Пустое поле", "Пожалуйста, введите Email")
             return False
 
         if self.phone_entry.get() == self.phone_entry.helper_text:
-            messagebox.showerror("Empty entry", "Please, type Phone number")
+            messagebox.showerror("Пустое поле", "Пожалуйста, введите Номер Телефона")
             return False
 
         try:
             int(self.bin_entry.get())
         except ValueError:
-            messagebox.showerror("Invalid value", "Company's BIN must be a number")
+            messagebox.showerror("Недопустимое значение", "БИН компании должен быть числом")
             return False
 
         return True
@@ -100,7 +100,7 @@ from transport_applications as ta
 inner join company c on ta.Company_id = c.Company_id
 where Company_BIN = %s''', (self.current_values[1],))
         if company_applications:
-            warnings_window = tkinter.messagebox.askquestion('Delete Applications', "All Applications from this company will be removed from the database.\nProceed?", icon='warning')
+            warnings_window = tkinter.messagebox.askquestion('Удаление Заявки', "Все Заявки от этой компании будут удалены из базы данных.\nПродолжить?", icon='warning')
             if warnings_window == 'yes':
                 db_commit('''delete ta
 from transport_applications as ta
@@ -111,7 +111,11 @@ where Company_BIN = %s''', (self.current_values[1],))
                 self.callback()
                 self.destroy()
         else:
-            db_commit('''delete from company
+            question_window = tkinter.messagebox.askquestion('Удаление Компании',
+                                                             "Вы уверены?",
+                                                             icon='question')
+            if question_window == 'yes':
+                db_commit('''delete from company
             where Company_BIN = %s''', (self.current_values[1],))
-            self.callback()
-            self.destroy()
+                self.callback()
+                self.destroy()
