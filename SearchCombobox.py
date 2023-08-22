@@ -1,16 +1,12 @@
 from tkinter import ttk
-import tkinter as tk
-from myscrollableframe import *
-import re
-from smh import *
-from Helper_entry import *
+import tkinter
+from myscrollableframe import ScrollableFrame
 import unicodedata
-import re
 
 
 class SearchCombobox(ttk.Entry):
     def __init__(self, parent, values, helper_text="", helper_text_color='#c6c6c6', *args, **kwargs):
-        self.textvariable = tk.StringVar(value="")
+        self.textvariable = tkinter.StringVar(value="")
         self.values = values
         vcmd = (parent.register(self.select_search_values), '%P', '%S')
         super().__init__(parent, textvariable=self.textvariable, validate='key',
@@ -50,8 +46,6 @@ class SearchCombobox(ttk.Entry):
             self.configure(foreground=self.default_color)
 
         self.select_search_values(self.textvariable.get(), None)
-
-        #self.change_selection_window_size()
 
         self.dropdown_window.deiconify()
 
@@ -94,7 +88,7 @@ class SearchCombobox(ttk.Entry):
         self.search_values = []
         normalized_search_entry = unicodedata.normalize('NFC', str(search_entry).casefold())
         for value in self.values:
-            normalized_value = unicodedata.normalize('NFC',str(value).casefold())
+            normalized_value = unicodedata.normalize('NFC', str(value).casefold())
             if normalized_search_entry in normalized_value:
                 self.search_values.append(value)
 

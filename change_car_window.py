@@ -1,11 +1,14 @@
-from smh import *
+import tkinter
+from tkinter import ttk
+from smh import db_select
+from smh import db_commit
 from tkinter import messagebox
-from Helper_entry import *
-from SearchCombobox import *
+from Helper_entry import HelperEntry
 
 
 class ChangeCarWindow(tkinter.Toplevel):
     def __init__(self, parent, car_number, callback, *args, **kwargs):
+        self.car_entry = None
         self.callback = callback
         self.current_car_number = car_number
         super().__init__(parent, *args, **kwargs)

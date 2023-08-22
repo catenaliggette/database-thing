@@ -1,13 +1,16 @@
-from myaddbutton import *
-from SearchCombobox import *
-from calendar_entry import *
-from smh import *
-from tkinterdnd2 import *
+from myaddbutton import MyAddButton
+from SearchCombobox import SearchCombobox
+from calendar_entry import CalendarEntry
+from smh import db_commit
+from smh import db_select
+from tkinterdnd2 import DND_ALL
 from tkinter import filedialog
 import os
 from tkinter import messagebox
 from datetime import datetime
-from add_company_button import *
+from add_company_button import AddCompanyButton
+import tkinter
+from tkinter import ttk
 
 
 class AddApplicationButton(MyAddButton):
@@ -31,7 +34,7 @@ class AddApplicationButton(MyAddButton):
         add_window.grab_set()
         add_window.focus_set()
         add_window.title('Добавление новой Заявки')
-        add_window.geometry("500x450")
+        add_window.geometry("510x450")
         add_window.bind('<Button-1>', lambda event: self.add_window_set_focus(event, add_window))
 
         SMR_file_name = tkinter.StringVar()

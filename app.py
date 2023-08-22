@@ -1,14 +1,12 @@
-from applications_frame import *
-from company_frame import *
-from tkinterdnd2 import *
-from cities_frame import *
-from cars_frame import *
+from applications_frame import ApplicationFrame
+from company_frame import CompanyFrame
+from tkinterdnd2 import TkinterDnD
+from tkinter import ttk
+from cities_frame import CitiesFrame
+from cars_frame import CarsFrame
 
 
 def on_tab_changed(event):
-    selected_tab = event.widget.tab(event.widget.select(), "text")
-    selected_index = event.widget.index(event.widget.select())
-    # Access the tab object
     tab_object = event.widget.nametowidget(event.widget.select())
     tab_object.new_data_select()
 
@@ -45,7 +43,6 @@ class App:
         tabs.add(companies_frame, text='Компании')
         tabs.add(cities_frame, text='Города')
         tabs.add(cars_frame, text='Автомобили')
-
 
         tabs.bind("<<NotebookTabChanged>>", on_tab_changed)
 

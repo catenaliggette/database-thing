@@ -1,12 +1,5 @@
 import copy
-
-from database import *
-import tkinter
 from tkinter import ttk
-from selection_option_window import *
-from smh import *
-from selection_date_window import *
-from myscrollableframe import *
 
 
 class CarTableFrame(ttk.Frame):

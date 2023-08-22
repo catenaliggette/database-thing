@@ -1,8 +1,11 @@
-from myaddbutton import *
-from smh import *
+import tkinter
+from tkinter import ttk
+from myaddbutton import MyAddButton
+from smh import db_commit
+from smh import db_select
 from tkinter import messagebox
-from Helper_entry import *
-from SearchCombobox import *
+from Helper_entry import HelperEntry
+from SearchCombobox import SearchCombobox
 
 
 class AddCityButton(MyAddButton):

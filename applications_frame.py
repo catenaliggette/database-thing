@@ -1,12 +1,10 @@
-import tkinter
 from tkinter import ttk
-
-from table_frame import *
-from add_application_button import *
-from myscrollableframe import *
-from myscrollableframe import *
-from Helper_entry import *
-from change_application_window import *
+from smh import db_select
+from table_frame import TableFrame
+from add_application_button import AddApplicationButton
+from myscrollableframe import ScrollableFrame
+from Helper_entry import HelperEntry
+from change_application_window import ChangeApplicationWindow
 
 
 class ApplicationFrame(ttk.Frame):

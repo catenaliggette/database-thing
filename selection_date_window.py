@@ -1,8 +1,6 @@
 import tkinter
 from tkinter import ttk
-from tkcalendar import Calendar
-from calendar_entry import *
-from smh import event_window_loss_focus
+from calendar_entry import CalendarEntry
 from datetime import datetime
 
 

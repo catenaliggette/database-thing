@@ -1,11 +1,14 @@
-from smh import *
+import tkinter
+from tkinter import ttk
+from smh import db_commit
+from smh import db_select
 from tkinter import messagebox
-from Helper_entry import *
-from SearchCombobox import *
+from Helper_entry import HelperEntry
 
 
 class ChangeCountryWindow(tkinter.Toplevel):
     def __init__(self, parent, country_name, callback, *args, **kwargs):
+        self.country_entry = None
         self.callback = callback
         self.current_country_name = country_name
         super().__init__(parent, *args, **kwargs)

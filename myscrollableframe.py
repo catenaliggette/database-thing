@@ -1,6 +1,6 @@
 import tkinter
 from tkinter import ttk
-from smh import *
+from smh import scroll_canvas
 
 
 class ScrollableFrame(ttk.Frame):

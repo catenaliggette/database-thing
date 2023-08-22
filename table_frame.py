@@ -1,14 +1,11 @@
-import copy
+import os
 
-from myframe import *
-from database import *
-from mytableframe import *
+from mytableframe import MyTableFrame
 import tkinter
-from tkinter import ttk
-from selection_option_window import *
-from smh import *
-from selection_date_window import *
-from myscrollableframe import *
+from selection_option_window import SelectionOptionWindow
+from smh import get_unique_val_column
+from smh import open_file
+from selection_date_window import SelectionDateWindow
 
 
 class TableFrame(MyTableFrame):

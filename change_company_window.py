@@ -1,6 +1,8 @@
-from smh import *
+import tkinter
+from tkinter import ttk
+from smh import db_commit
 from tkinter import messagebox
-from Helper_entry import *
+from Helper_entry import HelperEntry
 
 
 class ChangeCompanyWindow(tkinter.Toplevel):

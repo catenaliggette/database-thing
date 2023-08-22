@@ -1,14 +1,11 @@
-import tkinter
 from tkinter import ttk
-
-from cities_table_frame import *
-from add_city_button import *
-from myscrollableframe import *
-from myscrollableframe import *
-from Helper_entry import *
-from change_city_window import *
-from change_country_window import *
-from change_country_window import *
+from smh import db_select
+from cities_table_frame import CityTableFrame
+from add_city_button import AddCityButton
+from myscrollableframe import ScrollableFrame
+from Helper_entry import HelperEntry
+from change_city_window import ChangeCityWindow
+from change_country_window import ChangeCountryWindow
 
 
 class CitiesFrame(ttk.Frame):

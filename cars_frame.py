@@ -1,13 +1,10 @@
-import tkinter
 from tkinter import ttk
-
-from cities_table_frame import *
-from add_car_button import *
-from myscrollableframe import *
-from myscrollableframe import *
-from Helper_entry import *
-from change_car_window import *
-from cars_table_frame import *
+from smh import db_select
+from add_car_button import AddCarButton
+from myscrollableframe import ScrollableFrame
+from Helper_entry import HelperEntry
+from change_car_window import ChangeCarWindow
+from cars_table_frame import CarTableFrame
 
 
 class CarsFrame(ttk.Frame):

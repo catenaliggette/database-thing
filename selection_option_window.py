@@ -1,7 +1,7 @@
 import tkinter
 from tkinter import ttk
-from smh import *
-from myscrollableframe import *
+from smh import event_window_loss_focus
+from myscrollableframe import ScrollableFrame
 
 
 class SelectionOptionWindow(tkinter.Toplevel):
