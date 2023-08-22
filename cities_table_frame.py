@@ -44,7 +44,7 @@ class CityTableFrame(ttk.Frame):
                 label.bind('<Button-1>', self.city_editing_window)
                 city_label.grid(column=0, row=0, sticky='ew')
                 label.grid(column=1, row=0)
-                if col_index != 2:
+                if col_index != self.cities_in_row - 1:
                     sep = ttk.Separator(city_frame, orient='vertical')
                     sep.grid(column=2, row=0, sticky='ns', padx=20)
                 city_frame.columnconfigure(0, weight=1)

@@ -39,7 +39,7 @@ FROM (
 
         self.rowconfigure(0, weight=0)
         self.grid_columnconfigure(0, weight=1)
-        add_button = AddCompanyButton(parent=self, text='Add', style='Accent.TButton', callback=self.new_data_select)
+        add_button = AddCompanyButton(parent=self, text='Добавить', style='Accent.TButton', callback=self.new_data_select)
         add_button.grid(row=0, column=0, sticky='w')
 
         helper_text = 'Enter company details...'
@@ -49,7 +49,7 @@ FROM (
         #self.search_entry.textvariable.trace('w', lambda *args: self.search_query_update())
         self.search_entry.bind('<KeyRelease>', self.search_query_update)
 
-        clear_button = ttk.Button(self, text='Clear', command=self.clear_search_entry)
+        clear_button = ttk.Button(self, text='Очистить', command=self.clear_search_entry)
         clear_button.grid(column=0, row=0, sticky='e')
 
     def new_data_select(self):

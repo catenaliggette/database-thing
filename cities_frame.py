@@ -37,7 +37,7 @@ where country_name = %s"""
 
         self.rowconfigure(0, weight=0)
         self.grid_columnconfigure(0, weight=1)
-        add_button = AddCityButton(parent=self, text='Add', style='Accent.TButton', callback=self.new_data_select)
+        add_button = AddCityButton(parent=self, text='Добавить', style='Accent.TButton', callback=self.new_data_select)
         add_button.grid(row=0, column=0, sticky='w')
 
         self.search_entry = HelperEntry(self, helper_text='Введите название города или страны...', width=100)
@@ -45,7 +45,7 @@ where country_name = %s"""
 
         self.search_entry.textvariable.trace('w', lambda *args: self.new_data_select())
 
-        clear_button = ttk.Button(self, text='Clear', command=self.clear_search_entry)
+        clear_button = ttk.Button(self, text='Очистить', command=self.clear_search_entry)
         clear_button.grid(column=0, row=0, sticky='e')
 
     def new_data_select(self):

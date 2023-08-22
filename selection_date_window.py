@@ -19,7 +19,6 @@ class SelectionDateWindow(tkinter.Toplevel):
 
     def create_selection_window(self):
         self.overrideredirect(True)
-        #self.bind("<FocusOut>", lambda focus_event: event_window_loss_focus(focus_event, self, self.hide_window))
 
         selection_frame = ttk.LabelFrame(self, labelwidget=ttk.Frame(self))
         selection_frame.pack(fill='both', expand=True)
@@ -34,9 +33,9 @@ class SelectionDateWindow(tkinter.Toplevel):
             date_entry.grid(column=i, row=2)
             self.list_date_entry.append(date_entry)
 
-        start_label = ttk.Label(selection_frame, text='Start')
+        start_label = ttk.Label(selection_frame, text='Начало')
         start_label.grid(column=0, row=0, pady=(10, 0))
-        end_label = ttk.Label(selection_frame, text='End')
+        end_label = ttk.Label(selection_frame, text='Конец')
         end_label.grid(column=1, row=0, pady=(10, 0))
 
         for i in range(2):
@@ -76,4 +75,9 @@ class SelectionDateWindow(tkinter.Toplevel):
     def clear_data_entry(self, event):
         event.widget.config(text='')
         self.list_date_entry[event.widget.grid_info()['column']].clear_date()
+        self.callback()
+
+    def clear_all_date_entry(self):
+        for i in range(2):
+            self.list_date_entry[i].clear_date()
         self.callback()

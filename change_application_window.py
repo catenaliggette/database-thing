@@ -98,7 +98,7 @@ where Company_BIN = %s and application_date = %s and car_number = %s and freight
         self.date_entry.date_label.configure(foreground='#000000')
         self.date_entry.grid(column=1, row=1, sticky='w', padx=5, pady=(5, 0))
 
-        car_values, car_label_text = db_select('''select distinct car_number as "Номер машины:" from cars''')
+        car_values, car_label_text = db_select('''select distinct car_number as "Номер Автомобиля:" from cars''')
         car_label = ttk.Label(self, text=car_label_text[0])
         car_label.grid(column=0, row=3, padx=(10, 5), sticky='e', pady=(5, 0))
         self.car_searchbox = SearchCombobox(self, values=["".join(value) for value in car_values])

@@ -41,9 +41,9 @@ FROM (
 
         self.bind('<Button-1>', lambda event: self.focus_set())
 
-        self.rowconfigure(1, weight=1)
+        self.rowconfigure(2, weight=1)
         self.scrollable_frame = ScrollableFrame(self)
-        self.scrollable_frame.grid(row=1, column=0, sticky='news', pady=(10, 10))
+        self.scrollable_frame.grid(row=2, column=0, sticky='news', pady=(10, 10))
         table_data, column_names = db_select(self.query)
         self.table_frame = TableFrame(self.scrollable_frame.interior, parent.winfo_toplevel(),
                                       weights=[3, 3, 2, 3, 2, 4, 4, 1, 1],
@@ -56,7 +56,7 @@ FROM (
 
         self.rowconfigure(0, weight=0)
         self.grid_columnconfigure(0, weight=1)
-        add_button = AddApplicationButton(parent=self, text='Add', style='Accent.TButton',
+        add_button = AddApplicationButton(parent=self, text='Добавить', style='Accent.TButton',
                                           callback=self.new_data_select)
         add_button.grid(row=0, column=0, sticky='w')
 
@@ -69,6 +69,9 @@ FROM (
 
         clear_button = ttk.Button(self, text='Очистить', command=self.clear_search_entry)
         clear_button.grid(column=0, row=0, sticky='e')
+
+        clear_all_button = ttk.Button(self, text='Очистить Все', command=self.clear_all_selections)
+        clear_all_button.grid(column=0, row=1, sticky='e', pady=(10, 0))
 
     def new_data_select(self):
         new_data, _ = db_select(self.search_query)
@@ -91,3 +94,7 @@ FROM (
                     conditions.append(f"concatenated_columns LIKE '%{word}%'")
                 self.search_query += " AND ".join(conditions)
         self.new_data_select()
+
+    def clear_all_selections(self):
+        self.clear_search_entry()
+        self.table_frame.clear_all_selections()

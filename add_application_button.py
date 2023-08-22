@@ -68,7 +68,7 @@ class AddApplicationButton(MyAddButton):
                                         unselected_date_value='дд.мм.гггг')
         self.date_entry.grid(column=1, row=1, sticky='w', padx=5, pady=(5, 0))
 
-        car_values, car_label_text = db_select('''select distinct car_number as "Номер машины:" from cars''')
+        car_values, car_label_text = db_select('''select distinct car_number as "Номер Автомобиля:" from cars''')
         car_label = ttk.Label(add_window, text=car_label_text[0])
         car_label.grid(column=0, row=3, padx=(10, 5), sticky='e', pady=(5, 0))
         self.car_searchbox = SearchCombobox(add_window, values=["".join(value) for value in car_values])

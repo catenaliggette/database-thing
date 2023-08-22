@@ -60,7 +60,6 @@ class ChangeCountryWindow(tkinter.Toplevel):
 from cities
 inner join countries c on cities.country_id = c.country_id
 where country_name = %s''', (self.current_country_name,))
-        print(cities)
         if cities:
             question_window = tkinter.messagebox.askquestion('Удаление Страны',
                                                              "Все Города этой страны будут удалены из базы данных.\nПродолжить?",

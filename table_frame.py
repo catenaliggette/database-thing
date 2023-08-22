@@ -215,5 +215,11 @@ class TableFrame(MyTableFrame):
 
         self.change_window(selected_values)
 
-
-
+    def clear_all_selections(self):
+        for i in self.checkbox_columns_index:
+            self.list_selection_window[i].select_all_button()
+        for i in self.date_column_index:
+            self.list_selection_window[i].clear_all_date_entry()
+        for i in self.date_column_index:
+            self.list_label_arrow[i].configure(text='−')
+        self.update_table_frame()

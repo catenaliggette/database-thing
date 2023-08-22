@@ -2,6 +2,7 @@ from applications_frame import *
 from company_frame import *
 from tkinterdnd2 import *
 from cities_frame import *
+from cars_frame import *
 
 
 def on_tab_changed(event):
@@ -33,14 +34,17 @@ class App:
         applications_frame = ApplicationFrame(tabs)
         companies_frame = CompanyFrame(tabs)
         cities_frame = CitiesFrame(tabs)
+        cars_frame = CarsFrame(tabs)
 
         applications_frame.pack(fill='both', expand=True)
         companies_frame.pack(fill='both', expand=True)
         cities_frame.pack(fill='both', expand=True)
+        cars_frame.pack(fill='both', expand=True)
 
-        tabs.add(applications_frame, text='Applications')
-        tabs.add(companies_frame, text='Companies')
-        tabs.add(cities_frame, text='Cities')
+        tabs.add(applications_frame, text='Заявки')
+        tabs.add(companies_frame, text='Компании')
+        tabs.add(cities_frame, text='Города')
+        tabs.add(cars_frame, text='Автомобили')
 
 
         tabs.bind("<<NotebookTabChanged>>", on_tab_changed)
