@@ -4,6 +4,7 @@ from tkinterdnd2 import TkinterDnD
 from tkinter import ttk
 from cities_frame import CitiesFrame
 from cars_frame import CarsFrame
+import os
 
 
 def on_tab_changed(event):
@@ -14,7 +15,8 @@ def on_tab_changed(event):
 class App:
     root = TkinterDnD.Tk()
     style = ttk.Style(root)
-    root.tk.call('source', '..\\aplications_DB\\Forest-ttk-theme-master\\forest-light.tcl')
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    root.tk.call('source', 'forest-light.tcl')
     style.theme_use("forest-light")
 
     root.state('zoomed')
